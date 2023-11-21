@@ -10,13 +10,12 @@ namespace BitboardGui
     public partial class MainForm : Form
     {
         private readonly BitboardParser _bitboardParser;
-        private IList<TextBox> BitboardsTextBoxes { get; }
-        private IList<SolidBrush> Brushes { get;}
-        private SolidBrush EmptyBrush { get; }
-        private int BitBoardCount { get; }
-
-        private int BoardSize { get; set; } = 8;
-        private int BoardCellCount { get; set; } = 64;
+        private readonly IList<TextBox> _bitboardsTextBoxes;
+        private readonly IList<SolidBrush> _brushes;
+        private readonly SolidBrush _emptyBrush;
+        private readonly int _bitBoardCount;
+        private int _boardSize;
+        private int _boardCellCount;
 
         public MainForm() : this(new ulong[0])
         {
@@ -28,9 +27,9 @@ namespace BitboardGui
             _bitboardParser = new BitboardParser();
             var allBitboards = bitboards.ToList();
 
-            BitBoardCount = 13;
-            BitboardsTextBoxes = new TextBox[BitBoardCount];
-            BitboardsTextBoxes[0] = Bitboard0TextBox;
+            _bitBoardCount = 13;
+            _bitboardsTextBoxes = new TextBox[_bitBoardCount];
+            _bitboardsTextBoxes[0] = Bitboard0TextBox;
 
             var colors = new List<Color>
             {
@@ -50,7 +49,7 @@ namespace BitboardGui
             };
 
             var rng = new Random(0);
-            while (colors.Count < BitBoardCount)
+            while (colors.Count < _bitBoardCount)
             {
                 var red = rng.Next(0, 256);
                 var green = rng.Next(0, 256);
@@ -59,13 +58,14 @@ namespace BitboardGui
                 colors.Add(color);
             }
 
-            Brushes = colors.Select(x => new SolidBrush(x)).ToList();
-            EmptyBrush = new SolidBrush(Color.FromArgb(80,80,80));
-
+            _brushes = colors.Select(x => new SolidBrush(x)).ToList();
+            _emptyBrush = new SolidBrush(Color.FromArgb(80,80,80));
+            _boardSize = 8;
+            _boardCellCount = 64;
 
             var offset = 30;
 
-            for (var i = 1; i < BitBoardCount; i++)
+            for (var i = 1; i < _bitBoardCount; i++)
             {
                 var newTextBox = new TextBox();
                 newTextBox.Parent = this;
@@ -77,27 +77,27 @@ namespace BitboardGui
                 newLabel.Location = new Point(Bitboard0Label.Location.X, Bitboard0Label.Location.Y + offset*i);
                 newLabel.Text = $"Bitboard {i}:";
 
-                BitboardsTextBoxes[i] = newTextBox;
+                _bitboardsTextBoxes[i] = newTextBox;
             }
 
-            for (var i = 0; i < BitboardsTextBoxes.Count; i++)
+            for (var i = 0; i < _bitboardsTextBoxes.Count; i++)
             {
                 if (allBitboards.Count <= i)
                 {
                     allBitboards.Add(0UL);
                 }
                 //BitboardsTextBoxes[i].BackColor = EmptyBrush.Color;
-                BitboardsTextBoxes[i].ForeColor = Brushes[i].Color;
-                BitboardsTextBoxes[i].Font = new Font(FontFamily.GenericMonospace, 10, FontStyle.Bold);
+                _bitboardsTextBoxes[i].ForeColor = _brushes[i].Color;
+                _bitboardsTextBoxes[i].Font = new Font(FontFamily.GenericMonospace, 10, FontStyle.Bold);
             }
 
             for (var i = 0; i < allBitboards.Count; i++)
             {
-                if (i >= BitboardsTextBoxes.Count)
+                if (i >= _bitboardsTextBoxes.Count)
                 {
                     break;
                 }
-                BitboardsTextBoxes[i].Text = allBitboards[i].ToString();
+                _bitboardsTextBoxes[i].Text = allBitboards[i].ToString();
             }
 
             DisplayBitBoards(allBitboards.ToArray());
@@ -105,10 +105,10 @@ namespace BitboardGui
 
         private bool TryGetBitboards(out ulong[] bitboards)
         {
-            bitboards = new ulong[BitboardsTextBoxes.Count];
-            for (var i = 0; i < BitboardsTextBoxes.Count; i++)
+            bitboards = new ulong[_bitboardsTextBoxes.Count];
+            for (var i = 0; i < _bitboardsTextBoxes.Count; i++)
             {
-                var text = BitboardsTextBoxes[i].Text;
+                var text = _bitboardsTextBoxes[i].Text;
                 if (!_bitboardParser.TryParseBitboard(text, out bitboards[i]))
                 {
                     MessageBox.Show($"Invalid bitboard {i}");
@@ -127,8 +127,8 @@ namespace BitboardGui
                 return;
             }
 
-            BoardSize = boardSize;
-            BoardCellCount = boardSize * boardSize;
+            _boardSize = boardSize;
+            _boardCellCount = boardSize * boardSize;
         }
 
         private void ShowBitboardButton_Click(object sender, EventArgs e)
@@ -144,7 +144,7 @@ namespace BitboardGui
 
         private IEnumerable<bool> BitboardToCells(ulong bitboard)
         {
-            for (var i = 0; i < BoardCellCount; i++)
+            for (var i = 0; i < _boardCellCount; i++)
             {
                 var cellExists = (bitboard & (1UL << i)) != 0;
                 yield return cellExists;
@@ -158,33 +158,33 @@ namespace BitboardGui
             var bmp = new Bitmap(MainPictureBox.Width, MainPictureBox.Height);
 
             var textBrush = new SolidBrush(Color.FromArgb(255,255,255));
-            var cellWidth = bmp.Width/BoardSize;
-            var cellHeight = bmp.Height/BoardSize;
+            var cellWidth = bmp.Width/_boardSize;
+            var cellHeight = bmp.Height/_boardSize;
 
             var font = new Font(Font, FontStyle.Bold);
 
-            var borderIncrement = (cellWidth/2-5)/BitboardsTextBoxes.Count;
+            var borderIncrement = (cellWidth/2-5)/_bitboardsTextBoxes.Count;
 
             using (var graphics = Graphics.FromImage(bmp))
             {
-                for (var i = 0; i < BoardCellCount; i++)
+                for (var i = 0; i < _boardCellCount; i++)
                 {
-                    var cellX = (BoardSize - 1) - (i/BoardSize);
-                    var cellY = i % BoardSize;
+                    var cellX = (_boardSize - 1) - (i/_boardSize);
+                    var cellY = i % _boardSize;
 
-                    graphics.FillRectangle(EmptyBrush, cellY * cellWidth, cellX * cellHeight, cellWidth, cellHeight);
+                    graphics.FillRectangle(_emptyBrush, cellY * cellWidth, cellX * cellHeight, cellWidth, cellHeight);
 
                     var borderWidth = 0;
                     for (var j = 0; j < cells.Count; j++)
                     {
                         if (cells[j][i])
                         {
-                            graphics.FillRectangle(Brushes[j], cellY * cellWidth + borderWidth + 1, cellX * cellHeight + borderWidth + 1, cellWidth - 2*borderWidth - 1, cellHeight - 2*borderWidth - 1);
+                            graphics.FillRectangle(_brushes[j], cellY * cellWidth + borderWidth + 1, cellX * cellHeight + borderWidth + 1, cellWidth - 2*borderWidth - 1, cellHeight - 2*borderWidth - 1);
                             borderWidth += borderIncrement;
                         }
                     }
 
-                    var text = (char)(65+(cellY)) + (BoardSize-cellX).ToString();
+                    var text = (char)(65+(cellY)) + (_boardSize-cellX).ToString();
                     graphics.DrawString(text, font, textBrush, cellY * cellWidth + cellWidth/2 - 8, cellX * cellHeight + cellHeight/2 - 10);
                     graphics.DrawString(i.ToString().PadLeft(2, '0'), font, textBrush, cellY * cellWidth + cellWidth / 2 - 8, cellX * cellHeight + cellHeight/2 + 2);
                 }
@@ -207,12 +207,12 @@ namespace BitboardGui
                 return;
             }
 
-            var x = e.X / (MainPictureBox.Width / BoardSize);
-            var y = (BoardSize - 1) - (e.Y / (MainPictureBox.Height / BoardSize));
-            var pos = x + (y * BoardSize);
+            var x = e.X / (MainPictureBox.Width / _boardSize);
+            var y = (_boardSize - 1) - (e.Y / (MainPictureBox.Height / _boardSize));
+            var pos = x + (y * _boardSize);
             var bitboard = 1UL << pos;
             bitboards[0] ^= bitboard;
-            BitboardsTextBoxes[0].Text = "0x" + bitboards[0].ToString("X16");
+            _bitboardsTextBoxes[0].Text = "0x" + bitboards[0].ToString("X16");
             DisplayBitBoards(bitboards);
         }
     }

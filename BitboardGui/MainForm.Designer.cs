@@ -42,12 +42,13 @@
             this.MainPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.MainPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.MainPictureBox.Location = new System.Drawing.Point(0, 1);
             this.MainPictureBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MainPictureBox.Name = "MainPictureBox";
             this.MainPictureBox.Size = new System.Drawing.Size(593, 593);
             this.MainPictureBox.TabIndex = 0;
             this.MainPictureBox.TabStop = false;
+            this.MainPictureBox.SizeChanged += new System.EventHandler(this.MainPictureBox_SizeChanged);
             this.MainPictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MainPictureBox_MouseUp);
             // 
             // ShowBitboardButton

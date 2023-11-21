@@ -106,7 +106,7 @@ namespace BitboardGui
             DisplayBitBoards(allBitboards.ToArray());
         }
 
-        private bool TryGetBitboards(out ulong[] bitboards)
+        private bool TryGetBitboards(out ulong[] bitboards, bool showError)
         {
             bitboards = new ulong[_bitboardsTextBoxes.Count];
             for (var i = 0; i < _bitboardsTextBoxes.Count; i++)
@@ -114,7 +114,10 @@ namespace BitboardGui
                 var text = _bitboardsTextBoxes[i].Text;
                 if (!_bitboardParser.TryParseBitboard(text, out bitboards[i]))
                 {
-                    MessageBox.Show($"Invalid bitboard {i}");
+                    if (showError)
+                    {
+                        MessageBox.Show($"Invalid bitboard {i}");
+                    }
                     return false;
                 }
             }
@@ -137,7 +140,7 @@ namespace BitboardGui
         private void ShowBitboardButton_Click(object sender, EventArgs e)
         {
             SyncBoardSize();
-            if (!TryGetBitboards(out var bitboards))
+            if (!TryGetBitboards(out var bitboards, true))
             {
                 return;
             }
@@ -205,7 +208,7 @@ namespace BitboardGui
 
         private void MainPictureBox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (!TryGetBitboards(out var bitboards))
+            if (!TryGetBitboards(out var bitboards, true))
             {
                 return;
             }
@@ -216,6 +219,17 @@ namespace BitboardGui
             var bitboard = 1UL << pos;
             bitboards[0] ^= bitboard;
             _bitboardsTextBoxes[0].Text = "0x" + bitboards[0].ToString("X16");
+            DisplayBitBoards(bitboards);
+        }
+
+        private void MainPictureBox_SizeChanged(object sender, EventArgs e)
+        {
+            SyncBoardSize();
+            if (!TryGetBitboards(out var bitboards, false))
+            {
+                return;
+            }
+
             DisplayBitBoards(bitboards);
         }
     }

@@ -39,6 +39,9 @@
             // 
             // MainPictureBox
             // 
+            this.MainPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.MainPictureBox.Location = new System.Drawing.Point(0, 0);
             this.MainPictureBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MainPictureBox.Name = "MainPictureBox";
@@ -49,6 +52,7 @@
             // 
             // ShowBitboardButton
             // 
+            this.ShowBitboardButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ShowBitboardButton.Location = new System.Drawing.Point(616, 552);
             this.ShowBitboardButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ShowBitboardButton.Name = "ShowBitboardButton";
@@ -60,6 +64,7 @@
             // 
             // Bitboard0Label
             // 
+            this.Bitboard0Label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Bitboard0Label.AutoSize = true;
             this.Bitboard0Label.Location = new System.Drawing.Point(612, 60);
             this.Bitboard0Label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
@@ -70,6 +75,7 @@
             // 
             // Bitboard0TextBox
             // 
+            this.Bitboard0TextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Bitboard0TextBox.Location = new System.Drawing.Point(687, 57);
             this.Bitboard0TextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Bitboard0TextBox.Name = "Bitboard0TextBox";
@@ -79,6 +85,7 @@
             // 
             // BoardSizeLabel
             // 
+            this.BoardSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BoardSizeLabel.AutoSize = true;
             this.BoardSizeLabel.Location = new System.Drawing.Point(612, 9);
             this.BoardSizeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
@@ -89,6 +96,7 @@
             // 
             // BoardSizeTextBox
             // 
+            this.BoardSizeTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BoardSizeTextBox.Location = new System.Drawing.Point(687, 6);
             this.BoardSizeTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.BoardSizeTextBox.Name = "BoardSizeTextBox";

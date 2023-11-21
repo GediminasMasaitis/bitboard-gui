@@ -1,4 +1,4 @@
-﻿namespace ChessDotNet.BoardVisualizer
+﻿namespace BitboardGui
 {
     partial class MainForm
     {

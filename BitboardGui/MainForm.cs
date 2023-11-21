@@ -67,15 +67,18 @@ namespace BitboardGui
 
             for (var i = 1; i < _bitBoardCount; i++)
             {
-                var newTextBox = new TextBox();
-                newTextBox.Parent = this;
-                newTextBox.Location = new Point(Bitboard0TextBox.Location.X, Bitboard0TextBox.Location.Y + offset * i);
-                newTextBox.Size = Bitboard0TextBox.Size;
-
                 var newLabel = new Label();
                 newLabel.Parent = this;
                 newLabel.Location = new Point(Bitboard0Label.Location.X, Bitboard0Label.Location.Y + offset*i);
                 newLabel.Text = $"Bitboard {i}:";
+                newLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                newLabel.Width = Bitboard0Label.Width;
+
+                var newTextBox = new TextBox();
+                newTextBox.Parent = this;
+                newTextBox.Location = new Point(Bitboard0TextBox.Location.X, Bitboard0TextBox.Location.Y + offset * i);
+                newTextBox.Size = Bitboard0TextBox.Size;
+                newTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
 
                 _bitboardsTextBoxes[i] = newTextBox;
             }

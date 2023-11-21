@@ -97,6 +97,7 @@
             // BoardSizeTextBox
             // 
             this.BoardSizeTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BoardSizeTextBox.Enabled = false;
             this.BoardSizeTextBox.Location = new System.Drawing.Point(687, 6);
             this.BoardSizeTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.BoardSizeTextBox.Name = "BoardSizeTextBox";
